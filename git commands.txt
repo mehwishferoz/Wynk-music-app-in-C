@@ -1,0 +1,26 @@
+git commit -m "comment to be added"
+git add
+git log
+( git log - n (num) )
+git status
+git show
+git checkout (initial 6 digits of the sae value of the commit to which you want to revert back)
+
+1) touch .gitignore
+creates .gitignore folder that contains large files that are not to be committed
+2) git config --global user.name Mehwish
+3) git config --global user.email youremail.com
+4) git init
+initializes an empty repository
+5) git add .
+adds all files other that .gitignore to staging area
+6) git commit -m "Initial Commit"
+commits 
+7) git status
+to check if working tree is clean
+8) ssh-keygen -t ed25519 -C "wish.meh03@gmail.com"
+to get key
+9) tail <path to id_rsa.pub>
+add this key to github
+10) git remote add origin <ssh url.git>
+11) git push origin master
