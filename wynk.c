@@ -22,8 +22,19 @@ void welcome()
 
 }
 
+void menuSignin()
+{
+    printf("____________________________\n");
+    printf("\n\t    MENU\n");
+    printf("____________________________\n");
+    printf("1-> Log in\n");
+    printf("2-> sign In\n");
+    printf("____________________________\n");
+}
+
 int main()
 {
     welcome();
+    menuSignin();
     return 0;
 }
