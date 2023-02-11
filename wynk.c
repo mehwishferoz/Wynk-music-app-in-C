@@ -13,6 +13,16 @@ struct node
     int year;
 };
 
+struct name
+{
+    char song[30];
+};
+
+struct search
+{
+    struct name array[100];
+};
+
 struct login
 {
     char name[30];
@@ -21,6 +31,8 @@ struct login
 };
 
 struct node *head=NULL,*temp=NULL, *curr_song=NULL, *temp1=NULL, *temp2=NULL, *tail=NULL;
+struct search x;
+int f=0;
 
 void registration()
 {
@@ -68,19 +80,18 @@ int login()
     scanf("%[^\n]s",password);
 
     while(!feof(log))
-        {
+    {
         fscanf(log,"%s%s%s",x,u,p);
         if(strcmp(username,u)==0 && strcmp(password,p)==0)
-
-            {   
-                printf("\nSuccessful Login\n");
-                return 1;
-            }
-        else 
-            {
-                printf("\nIncorrect Login Details\nPlease enter the correct credentials\n");
-            }
+        {
+            printf("\nSuccessful Login\n");
+            return 1;
         }
+        else
+        {
+            printf("\nIncorrect Login Details\nPlease enter the correct credentials\n");
+        }
+    }
 
     fclose(log);
 
@@ -342,6 +353,7 @@ struct node *play_first_song()
     else
     {
         temp = head;
+        curr_song = temp;
         printf("\nNow Playing : %s",temp->song);
         return temp;
     }
@@ -357,6 +369,7 @@ struct node *play_last_song()
     else
     {
         temp = head;
+        curr_song = temp->prev;
         printf("\nNow Playing : %s",(temp->prev)->song);
         return (temp->prev);
     }
@@ -475,6 +488,9 @@ struct node *search_and_play()
     fflush(stdin);
     scanf("%[^\n]s",song);
 
+    strcpy(x.array[f].song,song);
+    f++;
+
     if(head==NULL)
     {
         printf("\nThe playlist is empty");
@@ -513,5 +529,93 @@ struct node *search_and_play()
             return temp;
         }
 
+    }
+}
+
+void display_curr_song()
+{
+    if(curr_song==NULL)
+    {
+        printf("\nNo song is being played");
+    }
+    else
+    {
+        printf("\nNow Playing : %s",curr_song->song);
+    }
+}
+
+void swap(struct node *a, struct node *b)
+{
+    int x;
+    char z[50];
+
+    x = a->year;
+    a->year = b->year;
+    b->year = x;
+
+    x = a->likes;
+    a->likes = b->likes;
+    b->likes = x;
+
+    strcpy(z,a->song);
+    strcpy(a->song,b->song);
+    strcpy(b->song,z);
+
+    strcpy(z,a->artist);
+    strcpy(a->artist,b->artist);
+    strcpy(b->artist,z);
+
+    strcpy(z,a->language);
+    strcpy(a->language,b->language);
+    strcpy(b->language,z);
+}
+
+void sort()
+{
+    if(head==NULL)
+    {
+        printf("\nNo songs in the playlist");
+    }
+    else if(head->next==head)
+    {
+        printf("\nSongs have been sorted");
+    }
+    else
+    {
+        int i,j;
+        for(i=0; i<count()-1; i++)
+        {
+            temp1=head;
+            temp2=head->next;
+
+            for(j=0; j<count()-1-i; j++)
+            {
+                if(temp1->year > temp2->year)
+                {
+                    swap(temp1,temp2);
+                }
+                temp1=temp2;
+                temp2=temp2->next;
+            }
+        }
+        printf("\nSongs have been sorted");
+    }
+    writeData();
+}
+
+void display_recently_searched()
+{
+    int i;
+    if(f==0)
+    {
+        printf("\nNo songs have been searched");
+    }
+    else
+    {
+        printf("\nRecently searched songs :");
+        for(i=0; i<f; i++)
+        {
+            printf("\n%s",x.array[i]);
+        }
     }
 }

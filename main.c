@@ -38,7 +38,7 @@ void menuSignin()
 void menu()
 {
     printf("\033[0;93m");
-    printf("-----------------------");
+    printf("\n-----------------------");
     printf("\n         MENU\n");
     printf("-----------------------\n");
     printf("\033[0m");
@@ -52,7 +52,10 @@ void menu()
     printf("8.Count the number of songs in the playlist\n\n");
     printf("9.Search a song and play\n\n");
     printf("10.Delete a song from the playlist\n\n");
-    printf("11.Exit\n");
+    printf("11.Display currently playing song\n\n");
+    printf("12.Sort by year\n\n");
+    printf("13.Display recently searched songs\n\n");
+    printf("14.Exit\n");
 }
 
 int main()
@@ -69,7 +72,7 @@ int main()
         case 1:
             logstatus=login();
             break;
-        
+
         case 2:
             registration();
             break;
@@ -128,6 +131,18 @@ int main()
             break;
 
         case 11:
+            display_curr_song();
+            break;
+
+        case 12:
+            sort();
+            break;
+
+        case 13:
+            display_recently_searched();
+            break;
+
+        case 14:
             exit(0);
         }
     }
