@@ -78,6 +78,9 @@ int main()
             break;
         }
     }
+
+    while(1)
+    {
     menu();
     printf("\nEnter choice: ");
         scanf("%d",&choice);
@@ -127,7 +130,7 @@ int main()
         case 11:
             exit(0);
         }
-
+    }
 
     return 0;
 }
