@@ -58,11 +58,28 @@ void menu()
     printf("14.Exit\n");
 }
 
+void menu2()
+{
+    printf("\033[0;35m");
+    printf("\n1.Select a song to play\n");
+    printf("\n2.Create a playlist\n\n");
+    printf("3.Exit\n");
+    printf("\033[0m");
+}
+
+void feed()
+{
+    printf("\n---------------------HOME---------------------\n");
+    display();
+    menu2();
+}
+
 int main()
 {
-    int choice, logstatus=0, x;
+    int choice, logstatus=0, x, flag=0;
     welcome();
     readData();
+    readData2();
     while(logstatus!=1)
     {
         menuSignin();
@@ -77,15 +94,39 @@ int main()
             registration();
             break;
 
-        default: printf("Please enter valid input..\n");
+        default:
+            printf("Please enter valid input..\n");
             break;
         }
     }
 
     while(1)
     {
-    menu();
-    printf("\nEnter choice: ");
+        feed();
+        printf("\nEnter choice: ");
+        scanf("%d",&choice);
+
+        switch(choice)
+        {
+        case 1:
+            search_and_play2();
+            break;
+        case 2:
+            flag=1; /*head=0;*/ goto playlist;
+            break;
+        case 3:
+            exit(0);
+            break;
+        default:
+            printf("Invalid input\n");
+        }
+    }
+
+playlist:
+    while(flag)
+    {
+        menu();
+        printf("\nEnter choice: ");
         scanf("%d",&choice);
 
         switch(choice)
@@ -95,7 +136,7 @@ int main()
             break;
 
         case 2:
-            display();
+            display_playlist();
             break;
 
         case 3:

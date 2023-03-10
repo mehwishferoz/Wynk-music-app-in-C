@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include "pthread_unistd.h"
 
 struct node
 {
@@ -30,7 +31,7 @@ struct login
     char password[30];
 };
 
-struct node *head=NULL,*temp=NULL, *curr_song=NULL, *temp1=NULL, *temp2=NULL, *tail=NULL;
+struct node *head=NULL,*temp=NULL, *curr_song=NULL, *temp1=NULL, *temp2=NULL, *tail=NULL, *head2=NULL;
 struct search x;
 int f=0;
 
@@ -67,7 +68,7 @@ int login()
     log = fopen("users.txt","r");
     if (!log)
     {
-        fputs("Error at opening File!", stderr);
+        fputs("Please sign up before logging in", stderr);
         exit(1);
     }
 
@@ -102,7 +103,7 @@ void writeData()
 {
     if(head)
     {
-        FILE *fp = fopen("Details.txt", "w");
+        FILE *fp = fopen("playlist.txt", "w");
         temp = head;
         do
         {
@@ -111,15 +112,14 @@ void writeData()
         }
         while (temp!=head);
         fclose(fp);
-        //printf("Linked list data is written to the File . . .\n");
     }
     else
     {
-        remove("Details.txt");
+        remove("playlist.txt");
     }
 }
 
-void readData()
+void readData2()
 {
     char s[30], a[30], l[20];
     int x, y;
@@ -129,7 +129,62 @@ void readData()
 
     if(fp==NULL)
     {
-        // printf("\nThe playlist is empty");
+        return;
+    }
+    else
+    {
+
+        do
+        {
+            fscanf(fp,"%s%s%s%d%d",s,a,l,&x,&y);
+
+            if(head2==NULL)
+            {
+                head2 = (struct node *)malloc(sizeof(struct node));
+                strcpy(head2->song,s);
+                strcpy(head2->artist,a);
+                strcpy(head2->language,l);
+                head2->likes = x;
+                head2->year = y;
+                head2->next = head2;
+                head2->prev = head2;
+            }
+            else
+            {
+                struct node *newnode;
+                newnode = (struct node *)malloc(sizeof(struct node));
+                temp=head2;
+                while(temp->next!=head2)
+                {
+                    temp=temp->next;
+                }
+                strcpy(newnode->song,s);
+                strcpy(newnode->artist,a);
+                strcpy(newnode->language,l);
+                newnode->likes = x;
+                newnode->year = y;
+                newnode->next=head2;
+                head2->prev=newnode;
+                temp->next=newnode;
+                newnode->prev=temp;
+            }
+        }
+        while (!feof(fp));
+
+        fclose(fp);
+    }
+}
+
+void readData()
+{
+    char s[30], a[30], l[20];
+    int x, y;
+    FILE *fp=NULL;
+
+    fp=fopen("playlist.txt","r");
+
+    if(fp==NULL)
+    {
         return;
     }
     else
@@ -176,49 +231,96 @@ void readData()
     }
 }
 
-struct node  *getnode()
+struct node *getnode()
 {
+    char s[30], a[30], l[20], SONG[30];
+    int x, y, flag=0;
     struct node *newnode;
     newnode = (struct node *)malloc(sizeof(struct node));
 
     printf("\nEnter the name of the song: ");
     fflush(stdin);
-    scanf("%[^\n]s",newnode->song);
-    printf("\nEnter the name of the artist: ");
-    fflush(stdin);
-    scanf("%[^\n]s",newnode->artist);
-    printf("\nEnter the language of the song: ");
-    fflush(stdin);
-    scanf("%[^\n]s",newnode->language);
-    printf("\nEnter the likes of the song: ");
-    scanf("%d",&newnode->likes);
-    printf("\nEnter the year of release of the song: ");
-    scanf("%d",&newnode->year);
+    scanf("%[^\n]s",SONG);
 
-    newnode->next=newnode;
-    newnode->prev=newnode;
+    FILE *fp = fopen("Details.txt", "r");
 
+    do
+    {
+        fscanf(fp,"%s%s%s%d%d",s,a,l,&x,&y);
+        if(strcasecmp(SONG,s)==0)
+        {
+            flag=1;
+            strcpy(newnode->song,s);
+            strcpy(newnode->artist,a);
+            strcpy(newnode->language,l);
+            newnode->likes = x;
+            newnode->year = y;
+            newnode->prev = newnode->next = newnode;
+        }
+    }
+    while (!feof(fp));
+    if(!flag)
+    {
+        printf("Song not found :(\n");
+        return NULL;
+    }
+    fclose(fp);
     return newnode;
 }
 
 void insert_song()
 {
+    int flag=0;
+    struct node *newnode=getnode();
+    if(!newnode)
+    {
+        printf("Cannot insert\n");
+        return;
+    }
     if(head==NULL)
     {
-        head=getnode();
+        head=newnode;
+    }
+    else if(head->next==head)
+    {
+        if(!strcasecmp(head->song,newnode->song))
+        {
+            printf("\nSong already in the playlist");
+            newnode=NULL;
+            free(newnode);
+            flag=1;
+        }
+        if(flag==0)
+        {
+            newnode->next=head;
+            head->prev=newnode;
+            head->next=newnode;
+            newnode->prev=head;
+        }
     }
     else
     {
-        struct node *newnode=getnode();
         temp=head;
-        while(temp->next!=head)
+        do
         {
+            if(!strcasecmp(temp->song,newnode->song))
+            {
+                printf("\nSong already in the playlist");
+                newnode=NULL;
+                free(newnode);
+                flag=1;
+                break;
+            }
             temp=temp->next;
         }
-        newnode->next=head;
-        head->prev=newnode;
-        temp->next=newnode;
-        newnode->prev=temp;
+        while(temp!=head);
+        if(flag==0)
+        {
+            newnode->next=head;
+            head->prev=newnode;
+            temp->next=newnode;
+            newnode->prev=temp;
+        }
     }
     writeData();
 }
@@ -316,8 +418,7 @@ void delete_song()
     writeData();
 }
 
-
-void display()
+void display_playlist()
 {
     if(head==NULL)
     {
@@ -328,18 +429,52 @@ void display()
         temp=head;
         while(temp->next!=head)
         {
+            printf("-----------------------\n");
             printf("Song : %s\n",temp->song);
             printf("Artist : %s\n",temp->artist);
             printf("Language : %s\n",temp->language);
             printf("Likes : %d\n",temp->likes);
             printf("Year : %d\n\n",temp->year);
+            printf("-----------------------\n");
             temp=temp->next;
         }
+        printf("-----------------------\n");
         printf("Song : %s\n",temp->song);
         printf("Artist : %s\n",temp->artist);
         printf("Language : %s\n",temp->language);
         printf("Likes : %d\n",temp->likes);
         printf("Year : %d\n\n",temp->year);
+        printf("-----------------------\n");
+    }
+}
+
+void display()
+{
+    if(head2==NULL)
+    {
+        printf("\nThe playlist is empty");
+    }
+    else
+    {
+        temp=head2;
+        while(temp->next!=head2)
+        {
+            printf("-----------------------\n");
+            printf("Song : %s\n",temp->song);
+            printf("Artist : %s\n",temp->artist);
+            printf("Language : %s\n",temp->language);
+            printf("Likes : %d\n",temp->likes);
+            printf("Year : %d\n\n",temp->year);
+            printf("-----------------------\n");
+            temp=temp->next;
+        }
+        printf("-----------------------\n");
+        printf("Song : %s\n",temp->song);
+        printf("Artist : %s\n",temp->artist);
+        printf("Language : %s\n",temp->language);
+        printf("Likes : %d\n",temp->likes);
+        printf("Year : %d\n\n",temp->year);
+        printf("-----------------------\n");
     }
 }
 
@@ -482,6 +617,7 @@ int count()
 
 struct node *search_and_play()
 {
+    unsigned int mSeconds = 100000;
     int found=0;
     char song[30];
     printf("\nEnter the name of the song you want to play : ");
@@ -503,7 +639,12 @@ struct node *search_and_play()
         {
             if(!strcasecmp(song,temp->song))
             {
-                printf("\nNow Playing : %s",temp->song);
+                printf("\033[0;34m");
+                printf("\n▁ ▂ ▄ ▅ ▆ ▇ █ Now Playing █ ▇ ▆ ▅ ▄ ▂ ▁\n %s\n",temp->song);
+                printf("\033[0m");
+                usleep(mSeconds);
+                usleep(1000000);
+
                 found = 1;
                 break;
             }
@@ -513,7 +654,12 @@ struct node *search_and_play()
         {
             if(!strcasecmp(song,temp->song))
             {
-                printf("\nNow Playing : %s",temp->song);
+                printf("\033[0;34m");
+                printf("\n▁ ▂ ▄ ▅ ▆ ▇ █ Now Playing █ ▇ ▆ ▅ ▄ ▂ ▁\n %s\n",temp->song);
+                printf("\033[0m");
+                usleep(mSeconds);
+                usleep(1000000);
+
                 found = 1;
             }
         }
@@ -529,6 +675,61 @@ struct node *search_and_play()
             return temp;
         }
 
+    }
+}
+
+void search_and_play2()
+{
+    unsigned int mSeconds = 100000;
+    int found=0;
+    char song[30];
+    printf("\nEnter the name of the song you want to play : ");
+    fflush(stdin);
+    scanf("%[^\n]s",song);
+
+    strcpy(x.array[f].song,song);
+    f++;
+
+    if(head2==NULL)
+    {
+        printf("\nThe playlist is empty");
+    }
+    else
+    {
+        temp=head2;
+        while(temp->next!=head2)
+        {
+            if(!strcasecmp(song,temp->song))
+            {
+                printf("\033[0;34m");
+                printf("\n▁ ▂ ▄ ▅ ▆ ▇ █ Now Playing █ ▇ ▆ ▅ ▄ ▂ ▁\n %s\n",temp->song);
+                printf("\033[0m");
+                usleep(mSeconds);
+                usleep(1000000);
+
+                found = 1;
+                break;
+            }
+            temp=temp->next;
+        }
+        if(!found)
+        {
+            if(!strcasecmp(song,temp->song))
+            {
+                printf("\033[0;34m");
+                printf("\n▁ ▂ ▄ ▅ ▆ ▇ █ Now Playing █ ▇ ▆ ▅ ▄ ▂ ▁\n %s\n",temp->song);
+                printf("\033[0m");
+                usleep(mSeconds);
+                usleep(1000000);
+
+                found = 1;
+            }
+        }
+
+        if(!found)
+        {
+            printf("\nSong not found in the playlist");
+        }
     }
 }
 
