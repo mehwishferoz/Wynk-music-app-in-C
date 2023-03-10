@@ -314,6 +314,7 @@ void insert_song()
             temp=temp->next;
         }
         while(temp!=head);
+        temp=temp->prev;
         if(flag==0)
         {
             newnode->next=head;
@@ -475,6 +476,7 @@ void display()
         printf("Likes : %d\n",temp->likes);
         printf("Year : %d\n\n",temp->year);
         printf("-----------------------\n");
+
     }
 }
 

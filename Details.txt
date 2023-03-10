@@ -1,7 +1,31 @@
 
-bewafa imran_khan hindi 200 2008
-tum_hi_ho arijit_singh hindi 100 2013
-double_take dhruv english 230 2019
-let_me zayn_malik english 210 2018
-tum_ho mohit_chauhan hindi 260 2011
-khuda_jaane kk hindi 254 2008
+Bewafa Imran_Khan Hindi 200 2008
+Die_For_You The_Weeknd English 300 2016
+Tum_Hi_Ho Arijit_Singh Hindi 100 2013
+Double_Take Dhruv English 230 2019
+Let_Me Zayn_Malik English 210 2018
+Tum_Ho Mohit_Chauhan Hindi 260 2011
+Shinunoga_E_Wa Fujii_Kaze Japanese 110 2020
+Khuda_Jaane KK Hindi 254 2008
+Flowers Miley_Cyrus English 123 2023
+Kill_Bill SZA English 30 2022
+Echame_La_Culpa Spanish 400 2017
+Agar_Tum_Saath_Ho Alka_Yagnik Hindi 550 2015
+Kabira Pritam Hindi 432 2013
+Chlorine Twenty_One_Pilots English 200 2018
+Slow_Dancing_In_The_Dark Joji English 388 2018
+Jocelyn_Flores Xxxtentacion English 660 2017
+Samajavaragamana Sid_Sriram Telugu 470 2019
+All_The_Stars Kendrick_Lamar English 543 2018
+Telisiney_Na_Nuvvey L_V_Revanth Telugu 169 2017
+Bekhayali Sachet_Tandon Hindi 669 2019
+Lost_Boy Ruth_B English 222 2015
+Summertime_Sadness Lana_Del_Rey English 478 2012
+Anti_Hero Taylor_Swift English 634 2022
+High_For_This The_Weeknd English 887 2011
+Nadaan_Parinde A_R_Rahman Hindi 1008 2011
+Tu_Jo_Mila KK Hindi 986 2015
+Mockingbird Eminem English 755 2004
+As_It_Was Harry_Styles English 643 2022
+Smells_Like_Teen_Spirit Nirvana English 1200 1991
+Bohemian_Rhapsody Queen English 1500 1975
