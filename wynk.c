@@ -125,7 +125,7 @@ void readData2()
     int x, y;
     FILE *fp=NULL;
 
-    fp=fopen("Details.txt","r");
+    fp=fopen("songs.txt","r");
 
     if(fp==NULL)
     {
@@ -242,7 +242,7 @@ struct node *getnode()
     fflush(stdin);
     scanf("%[^\n]s",SONG);
 
-    FILE *fp = fopen("Details.txt", "r");
+    FILE *fp = fopen("songs.txt", "r");
 
     do
     {
