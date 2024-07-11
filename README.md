@@ -1,4 +1,4 @@
-# 🎵 Wynk Music App Simulation 🎵
+# 🎵 Console-based Wynk Music App 🎵
 
 This project was completed during the 3rd semester for the Data Structures and Algorithms (DSA) course. The goal was to simulate the functionalities of the Wynk music app using C programming language and various data structures.
 
