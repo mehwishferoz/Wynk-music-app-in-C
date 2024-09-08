@@ -63,5 +63,3 @@ The simulated Wynk music app includes the following features:
 
 6. **Search Songs:**
    - 🔍 Use the search feature to find specific songs quickly.
-
-
